@@ -14,8 +14,8 @@
     </head>
 
     <body>
+        
         <h1>Manage Users </h1>
-
 
 
         <br>
@@ -37,9 +37,7 @@
                     <td>${user.lastName}</td>
 
 
-
-<!--  <td><a href="/?action=edit&amp;user_name=${user.firstName}">edit</a></td> -->
-                    <td><a href="/?action=edit_link&amp;users_email=${user.email}&amp;user_name=${user.firstName}">edit</a></td>
+                    <td><a href="/?action=edit_link&amp;users_email=${user.email}&amp;user_first_name=${user.firstName}&amp;user_last_name=${user.lastName}">edit</a></td>
                     <td><a href="/?action=delete&amp;user_first_name=${user.firstName}&amp;user_last_name=${user.lastName}" >delete</a></td>
                     <c:forEach items="${roles}" var="role">
 
@@ -50,12 +48,10 @@
                 </tr>
             </c:forEach>
 
-
-
         </table>
 
         <br>
-        <p>${message}</p>
+     
 
 
         <c:choose>
@@ -66,8 +62,8 @@
 
 
                     <p>${email}</p>
-                    First Name:  <input type="text" name="firstname"><br>
-                    Last Name <input type="text" name="lastname"><br>  
+                    First Name:  <input type="text" name="firstname" value="${first_name}"><br>
+                    Last Name <input type="text" name="lastname" value="${last_name}"><br>  
                     Password:  <input type="text" name="password"><br>
 
                     <select name="roles">
@@ -77,7 +73,8 @@
                     <br>
 
                     <input type="hidden" name="action" value="edit">
-                    <input type="submit" name="submit_edits_button" value="Edit User"><input type="submit" name="cancel_button" value="Cancel">
+                    <input type="submit" name="submit_edits_button" value="Edit User">
+                    <input type="submit" name="cancel_button" value="Cancel">
                 </form>
                 <p>${error}</p>
 
@@ -104,23 +101,7 @@
                 <p>${error}</p>
             </c:otherwise>
         </c:choose>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   <p>${message}</p>
 
         <br>
 

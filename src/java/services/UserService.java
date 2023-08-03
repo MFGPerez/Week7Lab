@@ -35,9 +35,9 @@ public class UserService {
 
 
 
-    public void update(User user, String firstName) throws Exception {
+    public void update(User user, String email) throws Exception {
 
-        USER_DB.update(user , firstName);
+        USER_DB.update(user , email);
     }
 
 

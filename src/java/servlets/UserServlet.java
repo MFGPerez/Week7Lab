@@ -33,7 +33,7 @@ public class UserServlet extends HttpServlet {
         /* GET ALL USERS  */
         try {
             ArrayList<User> usersArray = userService.getAll();
-             ArrayList<Role> rolesArray = roleService.getAll();
+            ArrayList<Role> rolesArray = roleService.getAll();
 
             /* IF NULL THROW ERROR MSG */
             if (usersArray == null) {
@@ -49,7 +49,7 @@ public class UserServlet extends HttpServlet {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex); // ???
         }
 
-             /* IF EDIT LINK IS PRESSED - EDIT TABLE IS SHOWN  */
+        /* IF EDIT LINK IS PRESSED - EDIT TABLE IS SHOWN  */
         if (action != null && action.equals("edit_link")) {
 
             String userEmail = request.getParameter("users_email");
@@ -60,14 +60,14 @@ public class UserServlet extends HttpServlet {
 
         }
 
-           /* IF DELETE LINK IS PRESSED - DELETE USER */
+        /* IF DELETE LINK IS PRESSED - DELETE USER */
         if (action != null && action.equals("delete")) {
 
             String userFirstName = request.getParameter("user_first_name");
             String userLastName = request.getParameter("user_last_name");
             try {
                 userService.delete(userFirstName); // delete that user 
-             
+
                 ArrayList<User> usersArray = userService.getAll(); // get users again to get the updated table  
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {
@@ -79,7 +79,7 @@ public class UserServlet extends HttpServlet {
             return;
 
         }
-           /* OTHERWISE SEND USERS WITH POPULATED USERS TO JSP  */
+        /* OTHERWISE SEND USERS WITH POPULATED USERS TO JSP  */
 
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
         return;
@@ -98,8 +98,8 @@ public class UserServlet extends HttpServlet {
 
         //String action = request.getParameter("action");
         String cancelButton = request.getParameter("cancel_button");
-        String editButton = request.getParameter(" submit_edits_button");
-       // String addButton = request.getParameter(" add_user_button");
+        String editButton = request.getParameter("submit_edits_button");
+        String addButton = request.getParameter("add_user_button");
 
 
         /* IF TABLE IS NOT FILLED OUT  */
@@ -120,37 +120,44 @@ public class UserServlet extends HttpServlet {
 
         }
         /* CREATE USER  */
-  
-         User newUser = new User(email, firstName, lastName, password, 2);
-         
+
+        User newUser = new User(email, firstName, lastName, password, 2);
+
         /* IF CANCEL BUTTON IS PRESSED  */
         if ("Cancel".equalsIgnoreCase(cancelButton)) {
             request.setAttribute("edit_table", false);
 
             /* IF EDIT BUTTON IS PRESSED  */
-        } else if ("Edit User".equalsIgnoreCase(editButton)) {
-
-            String userName = request.getParameter("user_name");
-
-                if (role.equalsIgnoreCase("option 1")) {
-               newUser = new User(email, firstName, lastName, password, 1);
         }
-        else if (role.equalsIgnoreCase("option 2")) {
-              newUser = new User(email, firstName, lastName, password, 2);
-        }
+        if (editButton != null) {
+
+         
+            String userEmail= request.getParameter("users_email");
+             String userFirstName = request.getParameter("user_first_name"); // for message 
+            String userLastName = request.getParameter("user_last_name"); // for message 
+               request.setAttribute("first_name", userFirstName);
+            request.setAttribute("last_name", userLastName);
+            
+
+            if (role.equalsIgnoreCase("option 1")) {
+                newUser = new User(email, firstName, lastName, password, 1);
+            } else if (role.equalsIgnoreCase("option 2")) {
+                newUser = new User(email, firstName, lastName, password, 2);
+            }
             try {
-                userService.update(newUser, userName);
+                userService.update(newUser, userEmail);
                 ArrayList<User> usersArray = userService.getAll(); // get users again to get the new user
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            request.setAttribute("message", "updated user: " + userName);
+             request.setAttribute("message", "updated user " + userFirstName + " " + userLastName); // confirmation msg that user was updated 
             getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
             return;
 
-        } else {
+        } 
+        if (addButton != null){
 
             /* OTHERWISE ADD USER TO TABLE  */
             try {

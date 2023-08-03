@@ -70,7 +70,7 @@ public class UserDB {
                  //User user = new User(email, firstName, lastName);
                   User user = new User(email, firstName, lastName, password, roleObj);
                // User user = new User(email, firstName, lastName,  roles.get(index).getRoleName());
-               // User user = new User(email, firstName, lastName, roles.get(index));
+      
                 users.add(user);
                // index++; 
             }
@@ -109,12 +109,12 @@ public class UserDB {
         }
     }
 
-    public void update(User user , String firstName) throws Exception {
+    public void update(User user , String email) throws Exception {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
-        //String sql = "UPDATE user SET first_name=?, last_name=?, password=?, role_name=? WHERE email=?";
-        String sql = "UPDATE user SET first_name=?, last_name=?, password=?, role=? WHERE first_name=?";
+       
+        String sql = "UPDATE user SET first_name=?, last_name=?, password=?, role=? WHERE email=?";
 
         try {
             ps = con.prepareStatement(sql);
@@ -122,7 +122,7 @@ public class UserDB {
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getPassword());
             ps.setInt(4, user.getRoleID());
-            ps.setString(5, firstName);
+            ps.setString(5, email);
             ps.executeUpdate();
         } finally {
             DBUtil.closePreparedStatement(ps);
